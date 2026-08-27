@@ -1,0 +1,841 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sticker Pack Runbook</title>
+<meta name="description" content="Shipping a sticker set to Apple Messages and LINE Creators Market: specs, submission steps, pricing and the buyer's journey. English and Japanese.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --ground:#F7F6F2; --surface:#FFFFFF; --surface-2:#F1F0EA;
+    --ink:#1C1D1A; --ink-soft:#5A5C55; --ink-faint:#8A8C83;
+    --rule:#E2E1D9; --rule-strong:#CFCEC3;
+    --accent:#2E6B4F; --accent-soft:#E4EDE7;
+    --pf-line:#2E7D4F; --pf-line-soft:#E6F0E8;
+    --pf-apple:#4B5563; --pf-apple-soft:#E9EAEE;
+    --warn:#8A5A12; --warn-soft:#F6EEDF;
+    --serif:"Zen Old Mincho",Georgia,"Times New Roman",serif;
+    --sans:"Zen Kaku Gothic New","Hiragino Sans","Helvetica Neue",Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#141715; --surface:#1B1F1D; --surface-2:#222724;
+      --ink:#ECEDE8; --ink-soft:#A6ABA3; --ink-faint:#767C74;
+      --rule:#2B302D; --rule-strong:#3C423E;
+      --accent:#7CC49B; --accent-soft:#1E2B24;
+      --pf-line:#7CC49B; --pf-line-soft:#1D2A22;
+      --pf-apple:#A8B0BD; --pf-apple-soft:#232830;
+      --warn:#D9A857; --warn-soft:#2C2519;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#141715; --surface:#1B1F1D; --surface-2:#222724;
+    --ink:#ECEDE8; --ink-soft:#A6ABA3; --ink-faint:#767C74;
+    --rule:#2B302D; --rule-strong:#3C423E;
+    --accent:#7CC49B; --accent-soft:#1E2B24;
+    --pf-line:#7CC49B; --pf-line-soft:#1D2A22;
+    --pf-apple:#A8B0BD; --pf-apple-soft:#232830;
+    --warn:#D9A857; --warn-soft:#2C2519;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px; margin:0 auto; padding:0 24px}
+
+  /* ---------- language switching ---------- */
+  :root[data-lang="en"] [lang="ja"]{display:none}
+  :root[data-lang="ja"] [lang="en"]{display:none}
+
+  /* ---------- header ---------- */
+  header{border-bottom:1px solid var(--rule); background:var(--surface)}
+  .head-in{display:flex; flex-wrap:wrap; align-items:flex-end; gap:16px 24px; padding:28px 0 22px}
+  .titleblock{flex:1 1 340px; min-width:0}
+  h1{
+    font-family:var(--serif); font-weight:700; font-size:clamp(1.7rem,4vw,2.3rem);
+    line-height:1.25; margin:0 0 6px; letter-spacing:.01em; text-wrap:balance;
+  }
+  .sub{margin:0; color:var(--ink-soft); font-size:.95rem; line-height:1.6}
+  .stamp{
+    display:inline-block; margin-top:10px; font-family:var(--mono); font-size:.72rem;
+    letter-spacing:.04em; color:var(--ink-faint); border:1px solid var(--rule);
+    border-radius:2px; padding:3px 8px;
+  }
+  .seg{display:flex; border:1px solid var(--rule-strong); border-radius:3px; overflow:hidden; flex:0 0 auto}
+  .seg button{
+    font-family:var(--sans); font-size:.85rem; font-weight:500; letter-spacing:.02em;
+    padding:8px 16px; border:0; background:var(--surface); color:var(--ink-soft); cursor:pointer;
+  }
+  .seg button+button{border-left:1px solid var(--rule-strong)}
+  .seg button[aria-pressed="true"]{background:var(--accent); color:var(--surface)}
+  .seg button:hover:not([aria-pressed="true"]){background:var(--surface-2); color:var(--ink)}
+
+  /* ---------- tabs ---------- */
+  .tabbar{border-bottom:1px solid var(--rule); background:var(--surface); position:sticky; top:0; z-index:5}
+  .tabs{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{
+    font-family:var(--sans); font-size:.92rem; font-weight:500; white-space:nowrap;
+    padding:13px 16px; border:0; border-bottom:2px solid transparent; background:none;
+    color:var(--ink-soft); cursor:pointer; letter-spacing:.01em;
+  }
+  .tabs button:hover{color:var(--ink)}
+  .tabs button[aria-selected="true"]{color:var(--accent); border-bottom-color:var(--accent)}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  /* ---------- panels ---------- */
+  main{padding:36px 0 88px}
+  [role="tabpanel"][hidden]{display:none}
+  h2{
+    font-family:var(--serif); font-weight:700; font-size:1.45rem; line-height:1.35;
+    margin:0 0 10px; text-wrap:balance;
+  }
+  h3{
+    font-family:var(--sans); font-weight:700; font-size:.78rem; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--ink-faint); margin:38px 0 12px;
+  }
+  h3:first-of-type{margin-top:28px}
+  p{margin:0 0 16px; max-width:68ch}
+  .lede{font-size:1.05rem; color:var(--ink-soft); max-width:64ch; margin-bottom:26px}
+  strong{font-weight:700}
+  code{
+    font-family:var(--mono); font-size:.86em; background:var(--surface-2);
+    border:1px solid var(--rule); border-radius:2px; padding:1px 5px;
+  }
+  a{color:var(--accent)}
+
+  /* ---------- callout ---------- */
+  .note{
+    border-left:3px solid var(--accent); background:var(--accent-soft);
+    padding:14px 18px; margin:0 0 26px; border-radius:0 3px 3px 0;
+  }
+  .note p{margin:0; max-width:62ch}
+  .note.warn{border-left-color:var(--warn); background:var(--warn-soft)}
+
+  /* ---------- tables ---------- */
+  .scroll{overflow-x:auto; margin:0 0 26px; border:1px solid var(--rule); border-radius:3px; background:var(--surface)}
+  table{border-collapse:collapse; width:100%; font-size:.9rem; min-width:520px}
+  th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--rule); vertical-align:top; line-height:1.6}
+  thead th{
+    font-size:.72rem; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--ink-faint); font-weight:700; background:var(--surface-2);
+  }
+  tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+  tbody th{font-weight:700; white-space:nowrap}
+  td.num{font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap}
+
+  /* ---------- numbered steps ---------- */
+  ol.steps{list-style:none; counter-reset:step; margin:0 0 12px; padding:0}
+  ol.steps li{
+    counter-increment:step; position:relative; padding:0 0 20px 46px;
+    border-left:1px solid var(--rule); margin-left:13px;
+  }
+  ol.steps li::before{
+    content:counter(step); position:absolute; left:-13px; top:2px;
+    width:26px; height:26px; border-radius:50%;
+    background:var(--surface); border:1px solid var(--rule-strong); color:var(--ink-soft);
+    font-family:var(--mono); font-size:.72rem; font-variant-numeric:tabular-nums;
+    display:flex; align-items:center; justify-content:center;
+  }
+  ol.steps li:last-child{border-left-color:transparent; padding-bottom:0}
+  ol.steps p{margin:0}
+  ol.steps p+p{margin-top:8px}
+  ol.steps[data-platform="line"] li::before{border-color:var(--pf-line); color:var(--pf-line); background:var(--pf-line-soft)}
+  ol.steps[data-platform="apple"] li::before{border-color:var(--pf-apple); color:var(--pf-apple); background:var(--pf-apple-soft)}
+
+  .ui{font-weight:700; color:var(--ink)}
+
+  /* ---------- plain lists ---------- */
+  ul.plain{margin:0 0 24px; padding-left:20px; max-width:66ch}
+  ul.plain li{margin-bottom:9px}
+
+  /* ---------- code block ---------- */
+  pre{
+    font-family:var(--mono); font-size:.82rem; line-height:1.65; margin:0 0 20px;
+    background:var(--surface); border:1px solid var(--rule); border-radius:3px;
+    padding:14px 16px; overflow-x:auto; color:var(--ink);
+  }
+
+  /* ---------- chips ---------- */
+  .chip{
+    display:inline-block; font-family:var(--mono); font-size:.7rem; letter-spacing:.05em;
+    padding:2px 7px; border-radius:2px; vertical-align:1px;
+  }
+  .chip.line{background:var(--pf-line-soft); color:var(--pf-line)}
+  .chip.apple{background:var(--pf-apple-soft); color:var(--pf-apple)}
+
+  footer{border-top:1px solid var(--rule); padding:22px 0 40px; color:var(--ink-faint); font-size:.83rem}
+  footer p{max-width:68ch; margin:0}
+
+  @media (max-width:560px){
+    .head-in{padding:22px 0 18px}
+    ol.steps li{padding-left:38px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap head-in">
+    <div class="titleblock">
+      <h1>
+        <span lang="en">Sticker Pack Runbook</span>
+        <span lang="ja">スタンプ申請ランブック</span>
+      </h1>
+      <p class="sub">
+        <span lang="en">Shipping one artwork set to Apple Messages and LINE Creators Market.</span>
+        <span lang="ja">ひとつの作品セットを Apple Messages と LINE クリエイターズマーケットへ出すまで。</span>
+      </p>
+      <span class="stamp">
+        <span lang="en">vendor specs checked 2026-08-25 · the live UI wins</span>
+        <span lang="ja">各社仕様の確認日 2026-08-25 · 実際の画面が優先</span>
+      </span>
+    </div>
+    <div class="seg" role="group" aria-label="Language / 言語">
+      <button type="button" id="lang-en" aria-pressed="true">English</button>
+      <button type="button" id="lang-ja" aria-pressed="false">日本語</button>
+    </div>
+  </div>
+</header>
+
+<div class="tabbar">
+  <div class="wrap">
+    <div class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" id="t-overview" aria-controls="p-overview" aria-selected="true">
+        <span lang="en">Overview</span><span lang="ja">全体像</span>
+      </button>
+      <button role="tab" id="t-specs" aria-controls="p-specs" aria-selected="false">
+        <span lang="en">Specs</span><span lang="ja">仕様</span>
+      </button>
+      <button role="tab" id="t-apple" aria-controls="p-apple" aria-selected="false">
+        <span lang="en">Apple Messages</span><span lang="ja">Apple Messages</span>
+      </button>
+      <button role="tab" id="t-line" aria-controls="p-line" aria-selected="false">
+        <span lang="en">LINE</span><span lang="ja">LINE</span>
+      </button>
+      <button role="tab" id="t-price" aria-controls="p-price" aria-selected="false">
+        <span lang="en">Pricing</span><span lang="ja">価格</span>
+      </button>
+      <button role="tab" id="t-buyer" aria-controls="p-buyer" aria-selected="false">
+        <span lang="en">How people get it</span><span lang="ja">入手の流れ</span>
+      </button>
+      <button role="tab" id="t-check" aria-controls="p-check" aria-selected="false">
+        <span lang="en">Before you submit</span><span lang="ja">申請前チェック</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- ==================== OVERVIEW ==================== -->
+<section role="tabpanel" id="p-overview" aria-labelledby="t-overview">
+  <h2><span lang="en">Three uses, two deliverables</span><span lang="ja">3つの用途、成果物は2つ</span></h2>
+  <p class="lede">
+    <span lang="en">“Message”, “Stamp” and “Reaction” are three ways people use a set — not three sets to build. On both platforms they collapse into two deliverables.</span>
+    <span lang="ja">「メッセージ」「スタンプ」「リアクション」は、使われ方が3通りあるという話であって、3種類つくるという話ではありません。どちらのプラットフォームでも成果物は2つに収まります。</span>
+  </p>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th><span lang="en">Use</span><span lang="ja">用途</span></th>
+          <th><span lang="en">LINE</span><span lang="ja">LINE</span></th>
+          <th><span lang="en">Apple Messages</span><span lang="ja">Apple Messages</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th><span lang="en">Message<br><span style="font-weight:400;color:var(--ink-faint)">inline, next to text</span></span><span lang="ja">メッセージ<br><span style="font-weight:400;color:var(--ink-faint)">本文に並べて使う</span></span></th>
+          <td><span lang="en"><strong>LINE Emoji</strong>, 180×180</span><span lang="ja"><strong>LINE絵文字</strong>、180×180</span></td>
+          <td><span lang="en">a sticker sent in a message</span><span lang="ja">メッセージに貼るステッカー</span></td>
+        </tr>
+        <tr>
+          <th><span lang="en">Stamp<br><span style="font-weight:400;color:var(--ink-faint)">the standalone big one</span></span><span lang="ja">スタンプ<br><span style="font-weight:400;color:var(--ink-faint)">単体で送る大きいもの</span></span></th>
+          <td><span lang="en"><strong>LINE Sticker</strong>, up to 370×320</span><span lang="ja"><strong>LINEスタンプ</strong>、最大370×320</span></td>
+          <td><span lang="en">the same sticker, sent on its own</span><span lang="ja">同じステッカーを単体で送信</span></td>
+        </tr>
+        <tr>
+          <th><span lang="en">Reaction<br><span style="font-weight:400;color:var(--ink-faint)">attached to someone’s message</span></span><span lang="ja">リアクション<br><span style="font-weight:400;color:var(--ink-faint)">相手のメッセージに付ける</span></span></th>
+          <td><span lang="en">the <strong>same emoji set</strong> — purchased LINE emoji work as reactions from LINE 15.5.0 (mobile) / 9.9.0 (desktop). Not in OpenChat.</span><span lang="ja"><strong>同じ絵文字セット</strong>。購入したLINE絵文字は LINE 15.5.0（スマホ）／9.9.0（PC）以降リアクションに使えます。OpenChatは対象外。</span></td>
+          <td><span lang="en">the <strong>same sticker pack</strong> — iOS 18 Tapbacks accept any emoji or sticker</span><span lang="ja"><strong>同じステッカーパック</strong>。iOS 18のTapbackは絵文字でもステッカーでも使えます。</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <p>
+      <span lang="en"><strong>There is no separate Reaction asset to build.</strong> Reaction reuses the emoji set on LINE and the sticker pack on Apple. What changes is legibility, not geometry — a reaction renders small, and that is a looking decision, not a spec.</span>
+      <span lang="ja"><strong>リアクション用に別途つくるものはありません。</strong> LINEでは絵文字セット、Appleではステッカーパックがそのままリアクションになります。変わるのは寸法ではなく「読めるかどうか」です。リアクションは小さく表示されるので、これは仕様ではなく目で見て判断することです。</span>
+    </p>
+  </div>
+
+  <h3><span lang="en">Build the bundles</span><span lang="ja">バンドルを書き出す</span></h3>
+  <pre>node scripts/sticker-pack.mjs &lt;sheet.png&gt; &lt;out&gt; --platform line-emoji   --rows R --cols C --expect N
+node scripts/sticker-pack.mjs &lt;sheet.png&gt; &lt;out&gt; --platform line-sticker --rows R --cols C --expect N
+node scripts/sticker-pack.mjs &lt;sheet.png&gt; &lt;out&gt; --platform apple --apple-size large --rows R --cols C --expect N</pre>
+  <p>
+    <span lang="en">Each bundle holds the stickers at the platform’s own size, an <code>upload/</code> folder with the extra images the submission form asks for, and a <code>SUBMIT.md</code> recording what was built against the published limits.</span>
+    <span lang="ja">各バンドルには、そのプラットフォームの寸法で書き出したスタンプ本体、申請フォームが求める付随画像を入れた <code>upload/</code>、そして公開仕様に対して何を書き出したかを記録した <code>SUBMIT.md</code> が入ります。</span>
+  </p>
+
+  <div class="note warn">
+    <p>
+      <span lang="en"><strong>Every deliverable is rendered from the source sheet at its native target size.</strong> The 180px set is an output, not a master — upscaling 180 to Apple’s 618 would ship a soft sticker, and the sheet has the resolution to do it properly.</span>
+      <span lang="ja"><strong>すべての成果物は元のシートから、その寸法で直接書き出します。</strong> 180pxのセットはマスターではなく出力のひとつです。180pxをAppleの618pxに拡大すると眠い絵になります。元シートには必要な解像度があります。</span>
+    </p>
+  </div>
+</section>
+
+<!-- ==================== SPECS ==================== -->
+<section role="tabpanel" id="p-specs" aria-labelledby="t-specs" hidden>
+  <h2><span lang="en">The numbers</span><span lang="ja">数値仕様</span></h2>
+  <p class="lede">
+    <span lang="en">Taken from each vendor’s published guidelines. LINE emoji and LINE stickers have <em>opposite</em> margin rules — that is the one people get wrong.</span>
+    <span lang="ja">各社の公開ガイドラインより。LINE絵文字とLINEスタンプでは余白のルールが<em>逆</em>です。ここが最も間違えやすい点です。</span>
+  </p>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th><span class="chip line">LINE</span> <span lang="en">Emoji</span><span lang="ja">絵文字</span></th>
+          <th><span class="chip line">LINE</span> <span lang="en">Sticker</span><span lang="ja">スタンプ</span></th>
+          <th><span class="chip apple">APPLE</span> <span lang="en">Messages</span><span lang="ja">Messages</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th><span lang="en">Image size</span><span lang="ja">画像サイズ</span></th>
+          <td class="num">180×180</td>
+          <td class="num"><span lang="en">up to 370×320</span><span lang="ja">最大 370×320</span></td>
+          <td class="num">300×300 / 408×408 / 618×618<br><span style="color:var(--ink-faint)">@3x small / medium / large</span></td>
+        </tr>
+        <tr>
+          <th><span lang="en">Margin</span><span lang="ja">余白</span></th>
+          <td><span lang="en"><strong>none</strong> — “leave no margins or empty space… as large as possible”</span><span lang="ja"><strong>なし</strong>。「余白や空白をつくらず、できるだけ大きく」</span></td>
+          <td><span lang="en"><strong>~10 px</strong> from the trimmed artwork to the edge</span><span lang="ja">トリミングした絵の外側に<strong>約10px</strong></span></td>
+          <td><span lang="en">not specified</span><span lang="ja">規定なし</span></td>
+        </tr>
+        <tr>
+          <th><span lang="en">Count</span><span lang="ja">個数</span></th>
+          <td class="num">8–40</td>
+          <td class="num">8 / 16 / 24 / 32 / 40</td>
+          <td><span lang="en">not fixed</span><span lang="ja">規定なし</span></td>
+        </tr>
+        <tr>
+          <th><span lang="en">Max file size</span><span lang="ja">1ファイル上限</span></th>
+          <td class="num">1 MB</td>
+          <td class="num">1 MB</td>
+          <td class="num"><strong>500 KB</strong></td>
+        </tr>
+        <tr>
+          <th><span lang="en">Format</span><span lang="ja">形式</span></th>
+          <td><span lang="en">PNG, RGB, transparent, even dimensions, ≥72 dpi</span><span lang="ja">PNG／RGB／背景透過／偶数ピクセル／72dpi以上</span></td>
+          <td><span lang="en">same</span><span lang="ja">同上</span></td>
+          <td>PNG / APNG / GIF / JPEG</td>
+        </tr>
+        <tr>
+          <th><span lang="en">Extra images</span><span lang="ja">付随画像</span></th>
+          <td><span lang="en">chat thumbnail 96×74</span><span lang="ja">トークルームタブ画像 96×74</span></td>
+          <td><span lang="en">main 240×240, chat thumbnail 96×74</span><span lang="ja">メイン画像 240×240、タブ画像 96×74</span></td>
+          <td><span lang="en">iMessage app icon set</span><span lang="ja">iMessageアプリアイコン一式</span></td>
+        </tr>
+        <tr>
+          <th><span lang="en">ZIP limit</span><span lang="ja">ZIP上限</span></th>
+          <td class="num">20 MB</td>
+          <td class="num">60 MB</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <p>
+      <span lang="en"><strong>One size class applies to a whole Apple pack.</strong> You do not mix small and large in one pack, and <code>--apple-size</code> must match the Sticker Size you set in Xcode. Apple’s 500 KB is the tight cap of the three — flat line art measured 153 KB at 618, but a textured or photographic sheet would push against it.</span>
+      <span lang="ja"><strong>Appleのパックはサイズ区分がパック単位です。</strong> 1つのパックにsmallとlargeを混在させることはできず、<code>--apple-size</code> はXcodeで設定するSticker Sizeと一致させます。3社のなかでAppleの500KBが最も厳しい上限です。線画では618pxで153KBでしたが、質感の強い絵や写真系だと近づきます。</span>
+    </p>
+  </div>
+
+  <h3><span lang="en">Apple’s iMessage app icon — eight slots</span><span lang="ja">Apple iMessageアプリアイコン — 8スロット</span></h3>
+  <p>
+    <span lang="en">All eight are <strong>4:3, not square</strong>, and all must be <strong>opaque</strong> — a transparent iMessage icon fails the asset-catalog build. The generated <code>.stickersiconset</code> already satisfies both.</span>
+    <span lang="ja">8つすべてが<strong>正方形ではなく4:3</strong>で、すべて<strong>不透明</strong>である必要があります。透過のあるiMessageアイコンはアセットカタログのビルドに失敗します。生成される <code>.stickersiconset</code> は両方を満たしています。</span>
+  </p>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th><span lang="en">Idiom</span><span lang="ja">対象</span></th>
+          <th><span lang="en">Size (pt)</span><span lang="ja">サイズ（pt）</span></th>
+          <th><span lang="en">Scale</span><span lang="ja">倍率</span></th>
+          <th><span lang="en">Pixels</span><span lang="ja">ピクセル</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>iPhone</td><td class="num">60×45</td><td class="num">2x</td><td class="num">120×90</td></tr>
+        <tr><td>iPhone</td><td class="num">60×45</td><td class="num">3x</td><td class="num">180×135</td></tr>
+        <tr><td>iPad</td><td class="num">67×50</td><td class="num">2x</td><td class="num">134×100</td></tr>
+        <tr><td>iPad</td><td class="num">74×55</td><td class="num">2x</td><td class="num">148×110</td></tr>
+        <tr><td>universal</td><td class="num">27×20</td><td class="num">2x</td><td class="num">54×40</td></tr>
+        <tr><td>universal</td><td class="num">27×20</td><td class="num">3x</td><td class="num">81×60</td></tr>
+        <tr><td>universal</td><td class="num">32×24</td><td class="num">3x</td><td class="num">96×72</td></tr>
+        <tr><td>ios-marketing</td><td class="num">1024×768</td><td class="num">1x</td><td class="num"><strong>1024×768</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <span lang="en">Note the App Store slot: <strong>1024×768, not 1024×1024.</strong></span>
+    <span lang="ja">App Store用スロットに注意してください。<strong>1024×1024ではなく1024×768</strong>です。</span>
+  </p>
+</section>
+
+<!-- ==================== APPLE ==================== -->
+<section role="tabpanel" id="p-apple" aria-labelledby="t-apple" hidden>
+  <h2><span lang="en">Apple Messages</span><span lang="ja">Apple Messages への申請</span></h2>
+  <p class="lede">
+    <span lang="en">A sticker pack ships through the App Store like any app. The template needs no code, but it does need a Mac, Xcode, and a paid Apple Developer Program membership.</span>
+    <span lang="ja">ステッカーパックは通常のアプリと同じくApp Store経由で配信します。テンプレートにコードは不要ですが、Mac・Xcode・有料のApple Developer Program登録が必要です。</span>
+  </p>
+
+  <h3><span lang="en">Before you start</span><span lang="ja">事前に必要なもの</span></h3>
+  <ul class="plain">
+    <li><span lang="en">A Mac with <strong>Xcode</strong>. The Sticker Pack App template contains no code.</span><span lang="ja">Mac と <strong>Xcode</strong>。Sticker Pack Appテンプレートにコードは含まれません。</span></li>
+    <li><span lang="en">An <strong>Apple Developer Program</strong> membership — paid, annual.</span><span lang="ja"><strong>Apple Developer Program</strong> のメンバーシップ（有料・年額）。</span></li>
+    <li><span lang="en">The bundle: <code>--platform apple --apple-size large</code> (300 = small, 408 = medium, 618 = large).</span><span lang="ja">バンドル: <code>--platform apple --apple-size large</code>（300=small、408=medium、618=large）。</span></li>
+  </ul>
+
+  <h3><span lang="en">Create the project</span><span lang="ja">プロジェクトを作成する</span></h3>
+  <ol class="steps" data-platform="apple">
+    <li><p><span lang="en">Xcode → <span class="ui">File → New → Project…</span></span><span lang="ja">Xcode → <span class="ui">File → New → Project…</span></span></p></li>
+    <li><p><span lang="en"><span class="ui">iOS</span> tab → <span class="ui">Sticker Pack App</span> → <span class="ui">Next</span>.</span><span lang="ja"><span class="ui">iOS</span> タブ → <span class="ui">Sticker Pack App</span> → <span class="ui">Next</span>。</span></p></li>
+    <li><p><span lang="en">Set Product Name and Team → <span class="ui">Next</span> → choose a location → <span class="ui">Create</span>.</span><span lang="ja">Product Name と Team を設定 → <span class="ui">Next</span> → 保存先を選択 → <span class="ui">Create</span>。</span></p></li>
+  </ol>
+
+  <h3><span lang="en">Add the stickers</span><span lang="ja">スタンプを追加する</span></h3>
+  <ol class="steps" data-platform="apple" start="4">
+    <li><p><span lang="en">Open <code>Stickers.xcstickers</code> in the project navigator and select the <span class="ui">Sticker Pack</span> inside it.</span><span lang="ja">プロジェクトナビゲータで <code>Stickers.xcstickers</code> を開き、中の <span class="ui">Sticker Pack</span> を選択します。</span></p></li>
+    <li><p><span lang="en">Drag every sticker PNG from the bundle’s top folder into the pack. The order in the catalog is the order users see.</span><span lang="ja">バンドル直下のPNGをすべてパックにドラッグします。カタログ上の並び順がそのまま利用者に見える順序になります。</span></p></li>
+    <li><p><span lang="en">Worth doing: with a sticker selected, fill its <span class="ui">Accessibility Description</span>. The <code>--labels</code> names are already in each filename, so it is a copy across — and it is what VoiceOver reads out.</span><span lang="ja">やっておく価値あり: スタンプを選択し <span class="ui">Accessibility Description</span> を入力します。<code>--labels</code> の名称がファイル名に入っているので写すだけで済み、VoiceOverはこれを読み上げます。</span></p></li>
+    <li><p><span lang="en">Select the Sticker Pack itself → Attributes inspector → <span class="ui">Sticker Size</span> → Small / Medium / Large, matching what you built.</span><span lang="ja">Sticker Pack自体を選択 → Attributes inspector → <span class="ui">Sticker Size</span> → 書き出したサイズに合わせて Small／Medium／Large を選びます。</span></p></li>
+  </ol>
+
+  <h3><span lang="en">Install the app icon</span><span lang="ja">アプリアイコンを差し込む</span></h3>
+  <ol class="steps" data-platform="apple" start="8">
+    <li><p><span lang="en">In Finder, replace the <code>.stickersiconset</code> folder inside <code>Stickers.xcstickers</code> with <code>upload/iMessage App Icon.stickersiconset</code> from the bundle. It holds all eight slots plus the <code>Contents.json</code> Xcode expects.</span><span lang="ja">Finderで、<code>Stickers.xcstickers</code> 内の <code>.stickersiconset</code> フォルダを、バンドルの <code>upload/iMessage App Icon.stickersiconset</code> で置き換えます。8スロットとXcodeが要求する <code>Contents.json</code> が入っています。</span></p></li>
+    <li><p><span lang="en">Reopen the catalog and confirm no well is empty. If Xcode shows a slot the bundle did not fill, render it from <code>icon-1024x768.png</code>.</span><span lang="ja">カタログを開き直し、空のスロットがないか確認します。バンドルが埋めていないスロットが表示された場合は <code>icon-1024x768.png</code> から作成します。</span></p></li>
+    <li><p><span lang="en">These icons are 4:3 crops of a sticker — correct and buildable, but wrong as a brand mark, because nothing complex reads at 54×40. <strong>Replace them with a designed icon before you submit.</strong></span><span lang="ja">生成されたアイコンはスタンプを4:3で切り出したものです。ビルドは通りますが、54×40では細かい絵は読めないためブランドマークとしては不十分です。<strong>申請前に、専用にデザインしたアイコンへ差し替えてください。</strong></span></p></li>
+  </ol>
+
+  <h3><span lang="en">Test on a device</span><span lang="ja">実機で確認する</span></h3>
+  <ol class="steps" data-platform="apple" start="11">
+    <li><p><span lang="en">Select a connected iPhone and <span class="ui">Run</span>. Messages launches with the pack in the app drawer.</span><span lang="ja">接続したiPhoneを選んで <span class="ui">Run</span>。Messagesが起動し、アプリドロワーにパックが表示されます。</span></p></li>
+    <li><p><span lang="en">Check three things by hand: the stickers appear at a sensible size; peeling one onto a message bubble works; and on <strong>iOS 18 or later</strong>, long-press a message, swipe across the Tapback row, and pick a sticker as the reaction. That last one is the “Reaction” use — there is no separate asset for it.</span><span lang="ja">手で3点確認します。スタンプが妥当な大きさで出るか。吹き出しに貼り付けられるか。そして <strong>iOS 18以降</strong> でメッセージを長押しし、Tapbackの列を横にスワイプしてステッカーをリアクションとして選べるか。最後のこれが「リアクション」の用途で、専用の素材は要りません。</span></p></li>
+  </ol>
+
+  <h3><span lang="en">Upload and submit</span><span lang="ja">アップロードと申請</span></h3>
+  <ol class="steps" data-platform="apple" start="13">
+    <li><p><span lang="en">Set the target’s <span class="ui">Bundle Identifier</span> and <span class="ui">Signing</span> team.</span><span lang="ja">ターゲットの <span class="ui">Bundle Identifier</span> と <span class="ui">Signing</span> のチームを設定します。</span></p></li>
+    <li><p><span lang="en">Choose <span class="ui">Any iOS Device</span> as the destination → <span class="ui">Product → Archive</span>.</span><span lang="ja">配信先に <span class="ui">Any iOS Device</span> を選び → <span class="ui">Product → Archive</span>。</span></p></li>
+    <li><p><span lang="en">In the Organizer: <span class="ui">Distribute App → App Store Connect → Upload</span>.</span><span lang="ja">Organizerで <span class="ui">Distribute App → App Store Connect → Upload</span>。</span></p></li>
+    <li><p><span lang="en">In App Store Connect, fill Name, Subtitle, Category (<span class="ui">Stickers</span>), Description, Keywords, Support URL, Privacy Policy URL, Age Rating, and the App Privacy questionnaire.</span><span lang="ja">App Store Connectで、名称・サブタイトル・カテゴリ（<span class="ui">Stickers</span>）・説明・キーワード・サポートURL・プライバシーポリシーURL・年齢制限、そしてApp Privacyの質問に回答します。</span></p>
+      <p><span lang="en">The single highest-value line in that description: <strong>say the stickers appear inside Messages, not on the Home Screen.</strong> See <strong>How people get it</strong>.</span><span lang="ja">説明文で最も効く一文はこれです。<strong>スタンプはホーム画面ではなくメッセージApp内に表示される、と明記すること。</strong> <strong>入手の流れ</strong>タブを参照。</span></p></li>
+    <li><p><span lang="en">Upload screenshots for each device family. App Store Connect lists the exact sizes — take them from the device in step 11, showing the pack open in Messages.</span><span lang="ja">対応デバイスごとのスクリーンショットを用意します。必要な寸法はApp Store Connectに表示されます。手順11の実機で、Messages上にパックを開いた状態を撮るのが早いです。</span></p></li>
+    <li><p><span lang="en">Set pricing and availability, attach the build, then <span class="ui">Add for Review</span> → <span class="ui">Submit for Review</span>. Review is manual.</span><span lang="ja">価格と配信地域を設定し、ビルドを紐づけて <span class="ui">Add for Review</span> → <span class="ui">Submit for Review</span>。審査は人手で行われます。</span></p></li>
+  </ol>
+
+  <h3><span lang="en">The scripted path</span><span lang="ja">コマンドラインで行う</span></h3>
+  <p>
+    <span lang="en">Steps 14–18 have a command-line equivalent. The App Store Connect API key is issued at <strong>team scope</strong> — one key, one issuer, one team, shared by every project. Never generate a key per project.</span>
+    <span lang="ja">手順14〜18はコマンドラインでも実行できます。App Store Connect APIキーは<strong>チーム単位</strong>で発行され、1つのキー・1つのIssuer・1つのTeamをすべてのプロジェクトで共有します。プロジェクトごとに新しいキーを作らないでください。</span>
+  </p>
+  <div class="note warn">
+    <p>
+      <span lang="en">A CI runner or agent shell may not have the <code>$HOME</code> you expect. Where it differs from the account that owns the credentials, <code>~/.appstoreconnect/…</code> silently resolves to the wrong home and the identifiers read as unset. Source them explicitly rather than relying on <code>~</code>.</span>
+      <span lang="ja">CIランナーやエージェントのシェルでは <code>$HOME</code> が想定と異なることがあります。認証情報を持つアカウントと異なる場合、<code>~/.appstoreconnect/…</code> は黙って別のホームを指し、識別子は未設定として読まれます。<code>~</code> に頼らず明示的に読み込んでください。</span>
+    </p>
+  </div>
+  <pre># the account that owns the App Store Connect credentials
+ASC_HOME="$HOME"
+eval "$(grep -E '^export (ASC_KEY_ID|ASC_ISSUER_ID|APPLE_TEAM_ID)=' $ASC_HOME/.zshrc)"
+ASC_KEY_PATH="$ASC_HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+
+xcodebuild -project StickerPack.xcodeproj -scheme StickerPack \
+  -destination 'generic/platform=iOS' \
+  -archivePath build/StickerPack.xcarchive \
+  DEVELOPMENT_TEAM="$APPLE_TEAM_ID" archive
+
+# ExportOptions.plist with destination = upload sends it in the same step
+xcodebuild -exportArchive -archivePath build/StickerPack.xcarchive \
+  -exportOptionsPlist ExportOptions.plist -exportPath build/export \
+  -authenticationKeyID "$ASC_KEY_ID" \
+  -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+  -authenticationKeyPath "$ASC_KEY_PATH"</pre>
+  <p>
+    <span lang="en">The same key triple signs an ES256 JWT for <code>api.appstoreconnect.apple.com</code>, which is what would drive the metadata, screenshots and review submission in step 16–18. <strong>Expect a brand-new app’s first submission to still need the UI</strong> for agreements and the App Privacy questionnaire.</span>
+    <span lang="ja">同じ3点セット（Key ID・Issuer ID・.p8）で <code>api.appstoreconnect.apple.com</code> 用のES256 JWTに署名できます。手順16〜18のメタデータ・スクリーンショット・審査提出はこれで自動化できます。<strong>ただし新規アプリの初回申請は、契約への同意とApp Privacyの回答のため画面操作が必要</strong>と考えてください。</span>
+  </p>
+
+  <div class="note">
+    <p>
+      <span lang="en"><strong>Enrol in the App Store Small Business Program before your first sale.</strong> Under $1M in annual proceeds it cuts Apple’s commission from 30% to <strong>15%</strong> — $0.84 net on a $0.99 pack instead of $0.69. It is an application, not automatic.</span>
+      <span lang="ja"><strong>初回販売の前に App Store Small Business Program に登録してください。</strong> 年間収益100万ドル未満であれば手数料が30%から<strong>15%</strong>になります。0.99ドルのパックで手取りが0.69ドルから0.84ドルに変わります。自動適用ではなく申請制です。</span>
+    </p>
+  </div>
+
+  <div class="note warn">
+    <p>
+      <span lang="en">There is no way to distribute a sticker pack to other people without the App Store — TestFlight for testers, App Store for everyone else. Running from Xcode covers only your own connected device.</span>
+      <span lang="ja">App Storeを通さずに他人へ配布する方法はありません。テスターにはTestFlight、一般にはApp Storeです。Xcodeからの実行は自分の実機だけです。</span>
+    </p>
+  </div>
+</section>
+
+<!-- ==================== LINE ==================== -->
+<section role="tabpanel" id="p-line" aria-labelledby="t-line" hidden>
+  <h2><span lang="en">LINE Creators Market</span><span lang="ja">LINE クリエイターズマーケットへの申請</span></h2>
+  <p class="lede">
+    <span lang="en">Stickers and Emoji are separate product types with separate specs. A set intended for both is submitted twice, from two bundles.</span>
+    <span lang="ja">スタンプと絵文字は別の商品種別で、仕様も別です。両方で出すなら、2つのバンドルから2回申請します。</span>
+  </p>
+
+  <h3><span lang="en">Before you start</span><span lang="ja">事前に必要なもの</span></h3>
+  <ul class="plain">
+    <li><span lang="en">A <strong>LINE account</strong> — the same one you use in the app; registration is tied to it.</span><span lang="ja"><strong>LINEアカウント</strong>。普段アプリで使っているものと同じで、登録はこれに紐づきます。</span></li>
+    <li><span lang="en">Creator registration: name and email, confirmed by email.</span><span lang="ja">クリエイター登録: 氏名とメールアドレス、確認メールでの承認。</span></li>
+    <li><span lang="en">Payout details — bank account or PayPal, plus tax information — to receive earnings.</span><span lang="ja">分配金の受け取りに必要な送金先情報（銀行口座またはPayPal）と税務情報。</span></li>
+  </ul>
+  <p>
+    <span lang="en">Revenue split: LINE pays out <strong>50%</strong> of sales after the 30% platform fee taken by Apple, Google or the other storefront.</span>
+    <span lang="ja">分配: Apple・Googleなど各ストアの手数料30%を差し引いたのち、その<strong>50%</strong>がクリエイターに支払われます。</span>
+  </p>
+
+  <h3><span lang="en">Register</span><span lang="ja">登録する</span></h3>
+  <ol class="steps" data-platform="line">
+    <li><p><span lang="en">Go to <strong>creator.line.me</strong> and click <span class="ui">Register</span>.</span><span lang="ja"><strong>creator.line.me</strong> を開き <span class="ui">登録</span> をクリックします。</span></p></li>
+    <li><p><span lang="en">Log in with your LINE account credentials and fill in your creator information.</span><span lang="ja">LINEアカウントでログインし、クリエイター情報を入力します。</span></p></li>
+    <li><p><span lang="en">Confirm your registration from the email LINE sends.</span><span lang="ja">LINEから届く確認メールで登録を完了します。</span></p></li>
+  </ol>
+
+  <h3><span lang="en">Create the item</span><span lang="ja">アイテムを作成する</span></h3>
+  <ol class="steps" data-platform="line" start="4">
+    <li><p><span lang="en">From the dashboard start a <span class="ui">New Submission</span> and choose the product type — <span class="ui">Sticker</span> or <span class="ui">Emoji</span>. They do not share a submission.</span><span lang="ja">管理画面から <span class="ui">新規登録</span> を開き、商品種別を選びます（<span class="ui">スタンプ</span> または <span class="ui">絵文字</span>）。両者は別々の申請です。</span></p></li>
+    <li><p><span lang="en">Enter the basic information and choose the set size: <strong>8, 16, 24, 32 or 40</strong> for static stickers (8 or 16 for animated). Emoji sets take 8–40.</span><span lang="ja">基本情報を入力し、セットの個数を選びます。静止スタンプは <strong>8・16・24・32・40</strong>（アニメーションは8または16）。絵文字は8〜40です。</span></p></li>
+    <li><p><span lang="en">Fill the <span class="ui">Product Details</span> screen: title and description per language, creator name, copyright holder, and category. The default language is what everyone outside your added languages sees.</span><span lang="ja"><span class="ui">商品情報</span> の画面を埋めます。言語ごとのタイトルと説明、クリエイター名、著作権者、カテゴリ。追加した言語以外の利用者には、既定言語の内容が表示されます。</span></p></li>
+  </ol>
+
+  <h3><span lang="en">Upload the images</span><span lang="ja">画像をアップロードする</span></h3>
+  <ol class="steps" data-platform="line" start="7">
+    <li><p><span lang="en">Upload the stickers — individually, or as a ZIP (≤60 MB for stickers, ≤20 MB for emoji). The bundle’s <code>upload/</code> folder holds numbered copies for this.</span><span lang="ja">スタンプをアップロードします。個別でも、ZIP（スタンプは60MB以下、絵文字は20MB以下）でも構いません。バンドルの <code>upload/</code> に連番のコピーが入っています。</span></p>
+      <p><span lang="en"><strong>The numbering convention is not stated on LINE’s published guideline page</strong> — check it against the form before trusting it.</span><span lang="ja"><strong>連番の命名規則はLINEの公開ガイドラインには明記されていません。</strong> 実際のフォームで確認してから使ってください。</span></p></li>
+    <li><p><span lang="en">Upload the <span class="ui">main image</span> (240×240 for stickers) and the <span class="ui">chat thumbnail icon</span> (96×74). Both are in <code>upload/</code>.</span><span lang="ja"><span class="ui">メイン画像</span>（スタンプは240×240）と<span class="ui">トークルームタブ画像</span>（96×74）をアップロードします。どちらも <code>upload/</code> にあります。</span></p></li>
+    <li><p><span lang="en">Select which sticker is used as the main image for LINE STORE and the in-app shop, if the form asks separately.</span><span lang="ja">フォームで別途聞かれる場合は、LINE STOREとアプリ内ショップで使うメイン画像を選びます。</span></p></li>
+  </ol>
+
+  <h3><span lang="en">Price, submit, release</span><span lang="ja">価格設定・申請・リリース</span></h3>
+  <ol class="steps" data-platform="line" start="10">
+    <li><p><span lang="en">Set the price from the tiers offered. The floor is <strong>50 coins</strong> (about ¥120) — see the <strong>Pricing</strong> tab for why an 8-sticker set belongs there.</span><span lang="ja">提示された価格帯から販売価格を設定します。下限は <strong>50コイン</strong>（約120円）です。8個セットをそこに置くべき理由は<strong>価格</strong>タブを参照してください。</span></p></li>
+    <li><p><span lang="en">Work through the <span class="ui">preview</span> screen and look at every sticker as it will appear in a chat. This is the last cheap moment to catch a bad one.</span><span lang="ja"><span class="ui">プレビュー</span> 画面で、トーク上での見え方を1つずつ確認します。安く直せる最後のタイミングです。</span></p></li>
+    <li><p><span lang="en"><span class="ui">Request review.</span> It takes <strong>a few hours to about two days</strong>. LINE notifies you by message from its official account.</span><span lang="ja"><span class="ui">リクエスト（審査申請）</span>。<strong>数時間〜2日程度</strong>かかります。結果は公式アカウントからのメッセージで届きます。</span></p></li>
+    <li><p><span lang="en">Release depends on the sales setting you chose. <strong>Automatic</strong> (the default): approved items go on sale by themselves — allow a few hours to appear in the Sticker Shop. <strong>Manual</strong>: open the <span class="ui">SUBMITTED</span> tab and tap <span class="ui">Release Stickers</span>.</span><span lang="ja">リリース方法は販売設定によります。<strong>自動</strong>（既定）: 承認されると自動的に販売開始になり、ショップへの反映まで数時間みておきます。<strong>手動</strong>: <span class="ui">申請済み</span> タブを開き <span class="ui">販売開始</span> をタップします。</span></p></li>
+    <li><p><span lang="en">If rejected, open <span class="ui">Message Center</span> from the status field to read the reason, fix it, and resubmit.</span><span lang="ja">リジェクトされた場合は、ステータス欄から <span class="ui">メッセージセンター</span> を開いて理由を確認し、修正して再申請します。</span></p></li>
+  </ol>
+</section>
+
+<!-- ==================== PRICING ==================== -->
+<section role="tabpanel" id="p-price" aria-labelledby="t-price" hidden>
+  <h2><span lang="en">What to charge</span><span lang="ja">いくらで売るか</span></h2>
+  <p class="lede">
+    <span lang="en">Both platforms have a conventional price that almost every independent set sits at. For a set of eight, that convention is also the right answer.</span>
+    <span lang="ja">どちらのプラットフォームにも、個人制作のセットがほぼ例外なく置かれている価格帯があります。8個のセットなら、その慣例どおりで正解です。</span>
+  </p>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th><span lang="en">Recommended</span><span lang="ja">推奨</span></th>
+          <th><span lang="en">You keep</span><span lang="ja">手取り</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th><span class="chip line">LINE</span></th>
+          <td><span lang="en"><strong>50 coins</strong> — the floor tier, about ¥120 / US$0.80</span><span lang="ja"><strong>50コイン</strong>（下限）。約120円／0.80米ドル</span></td>
+          <td class="num"><span lang="en">≈ ¥42 per set</span><span lang="ja">1セットあたり約42円</span></td>
+        </tr>
+        <tr>
+          <th><span class="chip apple">APPLE</span></th>
+          <td><span lang="en"><strong>$0.99</strong> — or $0.29 if you would rather optimise for installs</span><span lang="ja"><strong>0.99ドル</strong>。インストール数を優先するなら0.29ドルも選択肢</span></td>
+          <td class="num"><span lang="en">$0.84 with SBP<br>$0.69 without</span><span lang="ja">SBP登録時 0.84ドル<br>未登録 0.69ドル</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3><span lang="en">What the market actually does</span><span lang="ja">実際の相場</span></h3>
+  <p>
+    <span lang="en">When Sensor Tower surveyed the premium packs on the iMessage App Store, <strong>86% were at $0.99</strong>, 12% at $1.99, 1% at $2.99, and exactly one app sat higher. That survey is from the store’s early years, so read it as the shape of the market rather than today’s census — but $0.99 has remained the default. Apple now offers price points down to $0.29.</span>
+    <span lang="ja">Sensor Tower が iMessage App Store の有料パックを調査したところ、<strong>86%が0.99ドル</strong>、12%が1.99ドル、1%が2.99ドルで、それより高いものは1本だけでした。ストア初期の調査なので現在の実数ではなく相場の形として読むべきですが、0.99ドルが標準であることは変わっていません。現在Appleは0.29ドルまでの価格帯を用意しています。</span>
+  </p>
+  <p>
+    <span lang="en">On LINE, <strong>50 coins is where independent creator sets sit</strong>. Above it is where official and brand sets live.</span>
+    <span lang="ja">LINEでは<strong>個人制作のセットは50コイン</strong>に集中しています。それより上は公式・ブランドのセットの領域です。</span>
+  </p>
+
+  <div class="note">
+    <p>
+      <span lang="en"><strong>Eight is LINE’s minimum set size, and the price tiers do not scale with count.</strong> A buyer sees your 8-sticker set beside a 40-sticker set at the identical price. At eight you have no pricing power — take the floor.</span>
+      <span lang="ja"><strong>8個はLINEの最小構成で、価格帯は個数に連動しません。</strong> 購入者には、同じ価格の40個セットと並んで表示されます。8個では価格の交渉力がないので、下限を選ぶのが正解です。</span>
+    </p>
+  </div>
+
+  <h3><span lang="en">The economics, honestly</span><span lang="ja">収益の実際</span></h3>
+  <p>
+    <span lang="en">LINE pays <strong>50% of revenue after the storefront fee</strong> — Apple 26% in Japan from 1 January 2026, Google Play 30%, LINE STORE 30%. That lands at roughly <strong>35% of gross, about ¥42 a set</strong>.</span>
+    <span lang="ja">LINEの分配は<strong>各ストア手数料を差し引いた後の50%</strong>です。手数料はApple（日本、2026年1月1日から）26%、Google Play 30%、LINE STORE 30%。結果として<strong>総額の約35%、1セットあたり約42円</strong>になります。</span>
+  </p>
+  <div class="note warn">
+    <p>
+      <span lang="en">Two numbers matter more than the rate: the payout threshold is <strong>¥1,000</strong> (about 24 sales) and the transfer fee is <strong>¥495</strong> for a Japanese bank account. Requesting a payout the moment you cross the threshold hands half of it to the bank — let it accumulate to several thousand yen first.</span>
+      <span lang="ja">分配率より効いてくる数字が2つあります。送金申請は<strong>1,000円</strong>（約24セット）から可能で、日本の銀行口座への振込手数料は<strong>495円</strong>です。しきい値に届いた時点で申請すると半分が手数料に消えます。数千円まで貯めてから申請してください。</span>
+    </p>
+  </div>
+  <p>
+    <span lang="en"><strong>At eight stickers this is not a revenue play.</strong> The value is a working pipeline that turns one artwork sheet into two storefronts.</span>
+    <span lang="ja"><strong>8個のセットは収益事業にはなりません。</strong> 価値は、1枚の作品シートを2つのストアに載せられるパイプラインが手元にあることです。</span>
+  </p>
+
+  <h3><span lang="en">Two levers worth more than the price</span><span lang="ja">価格より効く2つのレバー</span></h3>
+  <ul class="plain">
+    <li>
+      <span lang="en"><strong>Set size.</strong> Going from 8 to 16 or 24 at the <em>same</em> tier is the single biggest conversion lever on LINE. It needs new artwork, not new tooling.</span>
+      <span lang="ja"><strong>セットの個数。</strong> <em>同じ価格帯</em>のまま8個から16個・24個に増やすことが、LINEでは最も効く改善です。必要なのは新しい作品であって、新しい仕組みではありません。</span>
+    </li>
+    <li>
+      <span lang="en"><strong>Which editions you list, and where.</strong> English and Japanese are separate products on both platforms — the text is baked into the pixels. And the buying experience splits them: <strong>lead the English edition on Apple and the Japanese edition on LINE</strong>. The reasoning is on the <strong>How people get it</strong> tab.</span>
+      <span lang="ja"><strong>どの版を、どこで出すか。</strong> 文字は画像に焼き込まれているため、英語版と日本語版はどちらのプラットフォームでも別商品です。さらに購入体験が両者を分けます。<strong>英語版はApple、日本語版はLINEを主戦場に</strong>。理由は<strong>入手の流れ</strong>タブにあります。</span>
+    </li>
+  </ul>
+</section>
+
+<!-- ==================== BUYER JOURNEY ==================== -->
+<section role="tabpanel" id="p-buyer" aria-labelledby="t-buyer" hidden>
+  <h2><span lang="en">How people get it</span><span lang="ja">利用者はどう手に入れるか</span></h2>
+  <p class="lede">
+    <span lang="en">The two journeys are not comparable, and the difference should decide which edition you lead with on which platform.</span>
+    <span lang="ja">2つの購入体験はまったく別物です。この違いが、どちらの版をどちらのプラットフォームで主に売るかを決めます。</span>
+  </p>
+
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th><span class="chip apple">APPLE</span></th>
+          <th><span class="chip line">LINE</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th><span lang="en">Discovery</span><span lang="ja">発見</span></th>
+          <td><span lang="en">The App Store under <strong>Stickers</strong>, or the iMessage App Store <em>inside</em> Messages — where most sticker browsing actually happens</span><span lang="ja">App Storeの<strong>Stickers</strong>カテゴリ、またはメッセージApp<em>内</em>のiMessage App Store。実際の閲覧はほぼ後者</span></td>
+          <td><span lang="en">Sticker Shop in the app, or LINE STORE on the web. Sets can also be gifted</span><span lang="ja">アプリ内のスタンプショップ、またはWebのLINE STORE。プレゼントも可能</span></td>
+        </tr>
+        <tr>
+          <th><span lang="en">Payment</span><span lang="ja">支払い</span></th>
+          <td><span lang="en">A normal $0.99 purchase on their existing Apple ID. No wallet to top up. Family Sharing applies</span><span lang="ja">既存のApple IDで0.99ドルを購入するだけ。チャージ不要。ファミリー共有も対象</span></td>
+          <td><span lang="en"><strong>In-app: LINE Coins</strong>, bought first through Apple/Google — two steps, and bundles rarely match the price, so there is leftover balance. <strong>On the web: direct payment</strong>, but the methods are regional</span><span lang="ja"><strong>アプリ内は LINEコイン</strong>。Apple／Google経由で先に購入する2段階で、コインは端数が残りがち。<strong>Webは直接決済</strong>だが決済手段は地域差が大きい</span></td>
+        </tr>
+        <tr>
+          <th><span lang="en">Install</span><span lang="ja">インストール</span></th>
+          <td><span lang="en"><strong>No Home Screen icon.</strong> It lives only inside Messages</span><span lang="ja"><strong>ホーム画面にアイコンは出ません。</strong> メッセージApp内にのみ存在します</span></td>
+          <td><span lang="en">Bought on the web, it must still be <strong>downloaded inside the app</strong></span><span lang="ja">Webで購入した場合も、<strong>アプリ内でダウンロード</strong>が必要です</span></td>
+        </tr>
+        <tr>
+          <th><span lang="en">Use</span><span lang="ja">使う</span></th>
+          <td><span lang="en">Apps row beside the text field → the pack → tap to send, or drag onto a bubble to peel-and-stick</span><span lang="ja">入力欄横のAppアイコン → パック → タップで送信、吹き出しにドラッグして貼り付け</span></td>
+          <td><span lang="en">Sticker/emoji key in the chat input → the set in the tray. Emoji sit inline in the text</span><span lang="ja">トーク入力欄のスタンプ／絵文字キー → トレイからセットを選択。絵文字は本文に並びます</span></td>
+        </tr>
+        <tr>
+          <th><span lang="en">React</span><span lang="ja">リアクション</span></th>
+          <td><span lang="en">iOS 18+: long-press a message, swipe across the Tapback row, pick a sticker. Same pack, no second purchase</span><span lang="ja">iOS 18以降: メッセージを長押しし、Tapbackの列を横にスワイプしてステッカーを選択。同じパックで、追加購入は不要</span></td>
+          <td><span lang="en">Long-press a message. Purchased emoji work from LINE 15.5.0 / desktop 9.9.0 — not in OpenChat</span><span lang="ja">メッセージを長押し。購入した絵文字は LINE 15.5.0／PC版 9.9.0 以降で使用可（OpenChatは対象外）</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note warn">
+    <p>
+      <span lang="en"><strong>The one that generates support questions: a sticker pack has no Home Screen icon.</strong> Apple’s own user guide states iMessage apps do not appear there. People buy it, go looking for an icon, and conclude the purchase failed. Put a line about it in the store description.</span>
+      <span lang="ja"><strong>問い合わせを最も生むのはこれです。スタンプパックにはホーム画面アイコンがありません。</strong> Appleのユーザガイドにも、iMessage Appはホーム画面に表示されないと明記されています。購入したのにアイコンが見つからず、失敗したと思われがちです。ストアの説明文に一文入れてください。</span>
+    </p>
+  </div>
+
+  <div class="note warn">
+    <p>
+      <span lang="en"><strong>LINE STORE payment is regional, and outside Japan it is thin.</strong> Japan gets credit card, carrier billing, PayPay, Rakuten Edy, prepaid cards and points. <strong>Australia, Brazil, Canada, France, Germany, Italy, Spain, the UK and the USA get PayPal only.</strong></span>
+      <span lang="ja"><strong>LINE STOREの決済手段は地域差が大きく、日本以外は選択肢が乏しいです。</strong> 日本はクレジットカード・キャリア決済・PayPay・楽天Edy・プリペイド・ポイントに対応。<strong>オーストラリア、ブラジル、カナダ、フランス、ドイツ、イタリア、スペイン、イギリス、アメリカはPayPalのみ</strong>です。</span>
+    </p>
+  </div>
+
+  <h3><span lang="en">What that means for two editions</span><span lang="ja">2つの版をどう配分するか</span></h3>
+  <div class="note">
+    <p>
+      <span lang="en"><strong>Lead the English edition on Apple, and the Japanese edition on LINE.</strong> LINE’s Western footprint is small <em>and</em> its web payment there is PayPal-only, so an English set on LINE is fighting both at once. Japanese users, conversely, look for stickers on LINE first and have the richest payment options anywhere. Build order can still be English-first — it is the channel priority that flips, and both editions are already built.</span>
+      <span lang="ja"><strong>英語版はApple、日本語版はLINEを主軸に。</strong> LINEは欧米での利用が限られるうえ、Web決済もPayPalのみという二重の逆風があります。逆に日本の利用者はまずLINEでスタンプを探し、決済手段も最も充実しています。制作順は英語版が先のままで構いません。切り替わるのは販売チャネルの優先度で、どちらの版もすでに完成しています。</span>
+    </p>
+  </div>
+</section>
+
+<!-- ==================== CHECKLIST ==================== -->
+<section role="tabpanel" id="p-check" aria-labelledby="t-check" hidden>
+  <h2><span lang="en">Before you submit</span><span lang="ja">申請前に</span></h2>
+  <p class="lede">
+    <span lang="en">The build checks what a machine can check. Everything below the line is what only a person can judge — and those are the usual rejection causes.</span>
+    <span lang="ja">機械で確認できることはビルドが確認します。その先にあるのは人にしか判断できないことばかりで、リジェクトの原因はたいていそちら側にあります。</span>
+  </p>
+
+  <h3><span lang="en">Checked automatically</span><span lang="ja">自動で確認される</span></h3>
+  <p>
+    <span lang="en"><code>sticker-pack.mjs</code> reports these and exits non-zero on any failure:</span>
+    <span lang="ja"><code>sticker-pack.mjs</code> は以下を報告し、いずれかが満たされなければ異常終了します。</span>
+  </p>
+  <ul class="plain">
+    <li><span lang="en">Image dimensions exactly at the platform’s spec, even-numbered for LINE.</span><span lang="ja">各プラットフォーム仕様どおりの寸法。LINEでは偶数ピクセル。</span></li>
+    <li><span lang="en">The per-file size cap — 1 MB for LINE, 500 KB for Apple — with the largest file named.</span><span lang="ja">1ファイルの上限（LINEは1MB、Appleは500KB）。最大のファイル名も表示されます。</span></li>
+    <li><span lang="en">The set count against LINE’s 8 / 16 / 24 / 32 / 40.</span><span lang="ja">セット個数がLINEの 8／16／24／32／40 に合っているか。</span></li>
+    <li><span lang="en">Real alpha, and every visible pixel attributed to exactly one sprite.</span><span lang="ja">実際のアルファ値の有無、そして見えているピクセルがすべて1つのスプライトに帰属しているか。</span></li>
+  </ul>
+
+  <h3><span lang="en">Only a person can judge</span><span lang="ja">人にしか判断できない</span></h3>
+  <ul class="plain">
+    <li>
+      <span lang="en"><strong>Rights to the artwork.</strong> Both vendors reject anything resembling a third party’s character, logo or photograph. If the sheet came from a generator or a marketplace, settle that you hold the rights to sell it <em>before</em> you submit.</span>
+      <span lang="ja"><strong>権利関係。</strong> 他者のキャラクター・ロゴ・写真に似たものは、どちらの審査でも通りません。生成ツールやマーケットプレイス由来のシートなら、販売できる権利があるかを<em>申請前に</em>はっきりさせてください。</span>
+    </li>
+    <li>
+      <span lang="en"><strong>Prohibited content</strong> under each vendor’s guidelines.</span>
+      <span lang="ja">各社ガイドラインで<strong>禁止されている内容</strong>にあたらないか。</span>
+    </li>
+    <li>
+      <span lang="en"><strong>Legibility at the size people actually see.</strong> A LINE emoji is used inline at text size; a Tapback reaction is smaller still.</span>
+      <span lang="ja"><strong>実際に表示される大きさで読めるか。</strong> LINE絵文字は本文と同じ大きさで使われ、Tapbackのリアクションはさらに小さくなります。</span>
+    </li>
+    <li>
+      <span lang="en">A <strong>designed app icon</strong> for Apple, replacing the generated placeholders.</span>
+      <span lang="ja">Apple向けの<strong>専用にデザインしたアプリアイコン</strong>。生成された仮アイコンと差し替えます。</span>
+    </li>
+    <li>
+      <span lang="en"><strong>Store copy</strong> — title, description, keywords. A marketing decision, not an asset one.</span>
+      <span lang="ja"><strong>ストア用の文章</strong>（タイトル・説明・キーワード）。素材の問題ではなくマーケティングの判断です。</span>
+    </li>
+  </ul>
+
+  <h3><span lang="en">How small this artwork survives</span><span lang="ja">どこまで小さくして耐えるか</span></h3>
+  <p>
+    <span lang="en">Measured by rendering the size ladder and looking — a score is the wrong instrument for “can a person still tell what this is”.</span>
+    <span lang="ja">サイズを段階的に書き出して目で見た結果です。「これが何か分かるか」を数値で測るのは筋が違います。</span>
+  </p>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th><span lang="en">Size</span><span lang="ja">サイズ</span></th>
+          <th><span lang="en">What survives</span><span lang="ja">何が残るか</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">128 / 96 px</td><td><span lang="en">Fully readable, captions included.</span><span lang="ja">文字も含めて完全に読めます。</span></td></tr>
+        <tr><td class="num">64 px</td><td><span lang="en">The expression still carries. Captions become a smear.</span><span lang="ja">表情は伝わります。文字は潰れます。</span></td></tr>
+        <tr><td class="num">48 px</td><td><span lang="en">Silhouette and colour only; faces turn ambiguous.</span><span lang="ja">シルエットと色のみ。表情の判別が曖昧になります。</span></td></tr>
+        <tr><td class="num">32 px</td><td><span lang="en">Only a big high-contrast decoration reads — a heart, a Zzz, sunglasses.</span><span lang="ja">コントラストの強い大きな装飾だけが読めます（ハート、Zzz、サングラスなど）。</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note">
+    <p>
+      <span lang="en"><strong>A set whose meaning lives in its caption needs a caption-free variant for reaction use — not a smaller downscale.</strong> Full-body human figures degrade sooner than big-headed animals, because the head is a smaller fraction of a square frame.</span>
+      <span lang="ja"><strong>意味を文字に預けているセットは、リアクション用に文字なしの別バージョンが要ります。単に縮小しても解決しません。</strong> 全身の人物は、頭の大きい動物より早く読めなくなります。正方形のなかで顔の占める割合が小さいからです。</span>
+    </p>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p>
+    <span lang="en">Vendor requirements were checked against the published guidelines on 2026-08-25. Both interfaces change — where a name here does not match what you see, the live UI wins. LINE has no creator submission API, so its steps are done by hand; Apple’s archive, upload and metadata can be scripted — see <em>The scripted path</em> on the Apple tab.</span>
+    <span lang="ja">各社の要件は2026-08-25時点の公開ガイドラインで確認しています。画面は変わるので、ここでの名称と実際の表示が食い違う場合は実画面が優先です。LINEにはクリエイター申請用のAPIがないため手作業になりますが、Appleはアーカイブ・アップロード・メタデータをスクリプト化できます（Appleタブの「コマンドラインで行う」を参照）。</span>
+  </p>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var store = {
+      get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    };
+
+    /* --- language --- */
+    var btnEn = document.getElementById('lang-en');
+    var btnJa = document.getElementById('lang-ja');
+    function setLang(lang) {
+      root.setAttribute('data-lang', lang);
+      root.setAttribute('lang', lang);
+      btnEn.setAttribute('aria-pressed', String(lang === 'en'));
+      btnJa.setAttribute('aria-pressed', String(lang === 'ja'));
+      store.set('runbook-lang', lang);
+    }
+    btnEn.addEventListener('click', function () { setLang('en'); });
+    btnJa.addEventListener('click', function () { setLang('ja'); });
+
+    /* --- tabs --- */
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+    function setTab(id) {
+      tabs.forEach(function (t) {
+        var on = t.id === id;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        var panel = document.getElementById(t.getAttribute('aria-controls'));
+        if (panel) panel.hidden = !on;
+      });
+      store.set('runbook-tab', id);
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { setTab(t.id); });
+      t.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        var next = tabs[(i + d + tabs.length) % tabs.length];
+        next.focus();
+        setTab(next.id);
+      });
+    });
+
+    /* --- restore --- */
+    var savedLang = store.get('runbook-lang');
+    setLang(savedLang === 'ja' || savedLang === 'en' ? savedLang : (navigator.language || '').toLowerCase().indexOf('ja') === 0 ? 'ja' : 'en');
+    var savedTab = store.get('runbook-tab');
+    setTab(savedTab && document.getElementById(savedTab) ? savedTab : 't-overview');
+  })();
+</script>
+
+</body>
+</html>
