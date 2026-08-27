@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sticker Pack Runbook</title>
 <meta name="description" content="Shipping a sticker set to Apple Messages and LINE Creators Market: specs, submission steps, pricing and the buyer's journey. English and Japanese.">
+<title>Sticker Pack Runbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -462,8 +462,8 @@ node scripts/sticker-pack.mjs &lt;sheet.png&gt; &lt;out&gt; --platform apple --a
   </p>
   <div class="note warn">
     <p>
-      <span lang="en">A CI runner or agent shell may not have the <code>$HOME</code> you expect. Where it differs from the account that owns the credentials, <code>~/.appstoreconnect/…</code> silently resolves to the wrong home and the identifiers read as unset. Source them explicitly rather than relying on <code>~</code>.</span>
-      <span lang="ja">CIランナーやエージェントのシェルでは <code>$HOME</code> が想定と異なることがあります。認証情報を持つアカウントと異なる場合、<code>~/.appstoreconnect/…</code> は黙って別のホームを指し、識別子は未設定として読まれます。<code>~</code> に頼らず明示的に読み込んでください。</span>
+      <span lang="en">A CI runner or agent shell may not have the <code>$HOME</code> you expect. Where it differs from the account that owns the credentials, <code>~/.appstoreconnect/…</code> silently resolves to the wrong home and the identifiers read as unset. Source them explicitly.</span>
+      <span lang="ja">CIランナーやエージェントのシェルでは <code>$HOME</code> が想定と異なることがあります。認証情報を持つアカウントと <code>$HOME</code> が異なる場合、<code>~/.appstoreconnect/…</code> は黙って別のホームを指し、識別子は未設定として読まれます。明示的に読み込んでください。</span>
     </p>
   </div>
   <pre># the account that owns the App Store Connect credentials
@@ -534,6 +534,57 @@ xcodebuild -exportArchive -archivePath build/StickerPack.xcarchive \
     <li><p><span lang="en">Enter the basic information and choose the set size: <strong>8, 16, 24, 32 or 40</strong> for static stickers (8 or 16 for animated). Emoji sets take 8–40.</span><span lang="ja">基本情報を入力し、セットの個数を選びます。静止スタンプは <strong>8・16・24・32・40</strong>（アニメーションは8または16）。絵文字は8〜40です。</span></p></li>
     <li><p><span lang="en">Fill the <span class="ui">Product Details</span> screen: title and description per language, creator name, copyright holder, and category. The default language is what everyone outside your added languages sees.</span><span lang="ja"><span class="ui">商品情報</span> の画面を埋めます。言語ごとのタイトルと説明、クリエイター名、著作権者、カテゴリ。追加した言語以外の利用者には、既定言語の内容が表示されます。</span></p></li>
   </ol>
+
+  <h3><span lang="en">Writing the title and description</span><span lang="ja">タイトルと説明文を書く</span></h3>
+  <p>
+    <span lang="en">Four fields, in every language you list. Write them before you reach the form — this is the step most likely to bounce you at the form rather than at review.</span>
+    <span lang="ja">登録する言語ごとに4項目。フォームに着く前に書いておきます。審査より前に、フォームで弾かれやすいのがこの工程です。</span>
+  </p>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>
+          <th><span lang="en">Field</span><span lang="ja">項目</span></th>
+          <th><span lang="en">Limit</span><span lang="ja">上限</span></th>
+          <th><span lang="en">What it does</span><span lang="ja">役割</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span lang="en">Title</span><span lang="ja">タイトル</span></td><td class="num">40</td><td><span lang="en">Search runs on it. Lead with the aesthetic someone would type.</span><span lang="ja">検索対象。探している人が打ち込む言葉を先頭に置きます。</span></td></tr>
+        <tr><td><span lang="en">Description</span><span lang="ja">説明文</span></td><td class="num">160</td><td><span lang="en">Read side by side with the preview grid.</span><span lang="ja">プレビュー画像と並べて読まれます。</span></td></tr>
+        <tr><td><span lang="en">Copyright holder</span><span lang="ja">著作権者</span></td><td class="num">50</td><td><span lang="en">A name.</span><span lang="ja">名義。</span></td></tr>
+        <tr><td><span lang="en">Creator name</span><span lang="ja">クリエイター名</span></td><td class="num">50</td><td><span lang="en">Shown on the store page.</span><span lang="ja">ストアページに表示されます。</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note warn">
+    <span lang="en"><strong>LINE counts an Asian character as two.</strong> So 160 is really about <strong>80 Japanese characters</strong>, and a description that looks comfortably short in an editor is rejected once you paste it — after everything else is filled. Count it mechanically: <code>node scripts/store-copy-lint.mjs copy.json</code> exits non-zero when a field is over.</span>
+    <span lang="ja"><strong>LINEはアジア圏の文字を2文字として数えます。</strong> つまり160は実質<strong>約80文字</strong>で、エディタ上では余裕に見える説明文が、他をすべて入力し終えた後の貼り付けで弾かれます。目視ではなく機械的に数えてください。<code>node scripts/store-copy-lint.mjs copy.json</code> は超過があれば異常終了します。</span>
+  </p>
+  <ul class="plain">
+    <li><span lang="en"><strong>Quote only captions that are actually in the set.</strong> One draft used <code>おやすみ</code> because it reads naturally — the sleeping sticker's caption was <code>Zzz…</code>. The description sits beside the preview, so a phrase that is not there is visibly wrong.</span><span lang="ja"><strong>実際にセットに入っている言葉だけを引用します。</strong> ある下書きは自然に読めるからと <code>おやすみ</code> を使いましたが、寝ているスタンプの文字は <code>Zzz…</code> でした。説明文はプレビューの隣にあるので、ない言葉はその場で見抜かれます。</span></li>
+    <li><span lang="en"><strong>Account for the stickers that are not the main character.</strong> Four of one sixteen-sticker set were a white cat and a rose; a buyer counting portraits notices.</span><span lang="ja"><strong>主役以外のスタンプにも触れます。</strong> 16個セットのうち4個は白ねこと薔薇でした。人物を数える利用者は差に気づきます。</span></li>
+    <li><span lang="en"><strong>The two languages are not translations of each other.</strong> LINE search is title-driven, so Japanese leads on the terms someone hunting that aesthetic types (<code>昭和レトロ</code>, <code>バラ</code>); English spends its cheaper characters on the moods. Write each to its own limit.</span><span lang="ja"><strong>2言語は互いの翻訳ではありません。</strong> LINEの検索はタイトル依存なので、日本語はその雰囲気を探す人が打つ語（<code>昭和レトロ</code>、<code>バラ</code>）を先に置きます。英語は1文字が安いぶんを表情の列挙に使えます。それぞれの上限に合わせて別々に書きます。</span></li>
+    <li><span lang="en"><strong>Claim no provenance the owner has not stated.</strong> "Hand-drawn", "original", <code>手描き</code> — rights are the most common rejection cause on both platforms, and no script can verify them. The linter flags these phrases rather than counting them.</span><span lang="ja"><strong>権利者本人が言っていない出自は書きません。</strong>「手描き」「オリジナル」など。権利関係は両プラットフォームで最も多いリジェクト理由で、スクリプトでは検証できません。上記のリンターはこれらの語を字数ではなく警告として拾います。</span></li>
+    <li><span lang="en">One title/description pair serves <strong>both</strong> the Sticker and the Emoji submission of the same artwork.</span><span lang="ja">同じ絵柄なら、1組のタイトルと説明文が<strong>スタンプと絵文字の両方</strong>の申請に使えます。</span></li>
+  </ul>
+  <p>
+    <span lang="en">A worked pair, both inside the limits:</span>
+    <span lang="ja">実際に通した例（いずれも上限内）:</span>
+  </p>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th></th><th><span lang="en">Copy</span><span lang="ja">本文</span></th><th><span lang="en">Count</span><span lang="ja">字数</span></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>JA <span lang="en">title</span><span lang="ja">タイトル</span></td><td>昭和レトロ少女｜バラのごあいさつ</td><td class="num">32/40</td></tr>
+        <tr><td>JA <span lang="en">description</span><span lang="ja">説明文</span></td><td>金色の巻き髪とバラをまとったレトロ少女、16種。こんにちは、ありがとう、行ってらっしゃい、ごめんなさい。毎日のひとことを少し華やかに。白ねこと薔薇の一枚も。</td><td class="num">154/160</td></tr>
+        <tr><td>EN <span lang="en">title</span><span lang="ja">タイトル</span></td><td>Retro Shoujo Girl: Roses &amp; Lace</td><td class="num">31/40</td></tr>
+        <tr><td>EN <span lang="en">description</span><span lang="ja">説明文</span></td><td>A retro shoujo girl in golden ringlets and roses, in sixteen everyday moods: hello, thank you, take care, sorry. With a white cat and a rose to match.</td><td class="num">150/160</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <h3><span lang="en">Upload the images</span><span lang="ja">画像をアップロードする</span></h3>
   <ol class="steps" data-platform="line" start="7">
@@ -836,6 +887,5 @@ xcodebuild -exportArchive -archivePath build/StickerPack.xcarchive \
     setTab(savedTab && document.getElementById(savedTab) ? savedTab : 't-overview');
   })();
 </script>
-
 </body>
 </html>
